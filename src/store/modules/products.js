@@ -1,4 +1,5 @@
 import api from "../../api";
+import { ADD_NEW_PRODUCT, DELETE_PRODUCT, GET_ALL_PRODUCT } from "../type";
 export default {
   namespace: true,
   state() {
@@ -8,15 +9,9 @@ export default {
     };
   },
 
-  getters: {
-    getAllProduct() {
-      api.getProductApi(res => {
-        return res.data;
-      });
-    },
-  },
+  getters: {},
   mutations: {
-    getAllProduct(state) {
+    [GET_ALL_PRODUCT](state) {
       api.getProductApi(res => {
         state.data = res.data;
         state.processing = false;
@@ -25,7 +20,7 @@ export default {
     addNewProduct(state, { product }) {
       state.data = [...state.data, product];
     },
-    addNewProductJson(state, { product }) {
+    [ADD_NEW_PRODUCT](state, { product }) {
       state.processing = true;
       api.addNewProductApi(product.product, function() {
         api.getProductApi(res => {
@@ -37,21 +32,21 @@ export default {
     deleteProduct(state, id) {
       state.data = state.data.filter(i => i.id !== id);
     },
-    deleteProductJson(state, id) {
+    [DELETE_PRODUCT](state, id) {
       api.deleteProductApi(id, function() {
         state.data = state.data.filter(i => i.id !== id);
       });
     },
   },
   actions: {
-    productAction({ commit }) {
-      commit("getAllProduct");
+    [GET_ALL_PRODUCT]({ commit }) {
+      commit(GET_ALL_PRODUCT);
     },
-    addProductAction({ commit }, product) {
-      commit("addNewProductJson", { product });
+    [ADD_NEW_PRODUCT]({ commit }, product) {
+      commit(ADD_NEW_PRODUCT, { product });
     },
-    deleteProductAction({ commit }, id) {
-      commit("deleteProductJson", id);
+    [DELETE_PRODUCT]({ commit }, id) {
+      commit(DELETE_PRODUCT, id);
     },
   },
 };

@@ -81,6 +81,11 @@ import moment from "moment";
 import Product from "./Product.vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
+import {
+  ADD_NEW_PRODUCT,
+  DELETE_PRODUCT,
+  GET_ALL_PRODUCT,
+} from "../store/type";
 
 export default {
   components: {
@@ -101,7 +106,7 @@ export default {
         e.preventDefault();
         if (!this.name || !this.quantity || !this.img || !this.price) return;
         store.dispatch({
-          type: "addProductAction",
+          type: ADD_NEW_PRODUCT,
           product: {
             name: this.name,
             quantity: this.quantity,
@@ -112,17 +117,13 @@ export default {
         });
       },
       deleteProduct: function (id) {
-        store.dispatch("deleteProductAction", id);
-      },
-      getAllProduct: function (e) {
-        e.preventDefault();
-        store.commit("getAll");
+        store.dispatch(DELETE_PRODUCT, id);
       },
     };
   },
   created: function () {
     const store = useStore();
-    store.dispatch("productAction");
+    store.dispatch(GET_ALL_PRODUCT);
   },
 };
 </script>

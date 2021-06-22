@@ -1,10 +1,15 @@
 <template>
-  <ul class="flex flex-wrap mx-auto">
+  <transition-group
+    tag="div"
+    name="list-complete"
+    class="flex flex-wrap mx-auto"
+  >
     <li
       v-for="item in data"
       :key="item.id"
       @click="deleteProduct(item.id)"
       class="
+        list-complete-item
         shadow-md
         duration-75
         list-none
@@ -19,7 +24,7 @@
         rounded-md
       "
     >
-      <img :src="item.img" class="hover:bg-gray-100 mx-auto" alt="image" />
+      <img :src="item.img" class="hover:bg-gray-100 mx-auto h-60" alt="image" />
       <div class="flex justify-between">
         <a class="text-left py-2 truncate uppercase text-md">{{ item.name }}</a>
         <p class="py-2 font-bold whitespace-nowrap">x {{ item.quantity }}</p>
@@ -29,7 +34,7 @@
         {{ moment(item.created_at).fromNow() }}
       </p>
     </li>
-  </ul>
+  </transition-group>
 </template>
 
 <script>
@@ -47,5 +52,19 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+.list-complete-item {
+  transition: transform 0.8s ease;
+  display: inline-block;
+}
+
+.list-complete-enter-from,
+.list-complete-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.list-complete-leave-active {
+  position: absolute;
+}
 </style>
